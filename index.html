@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>PiP Invisível</title>
+  <title>PiP com botão flutuante</title>
   <style>
     html, body {
       margin: 0;
@@ -17,8 +17,6 @@
       height: 100vh;
       background: #000;
       position: relative;
-      border: none;
-      box-shadow: none;
     }
 
     .video-frame {
@@ -42,7 +40,7 @@
       transition: opacity 0.3s ease;
     }
 
-    .browser-window:hover .controls {
+    .browser-window.show-bar:hover .controls {
       opacity: 1;
       pointer-events: auto;
     }
@@ -64,22 +62,47 @@
       cursor: pointer;
       font-size: 14px;
     }
+
+    .toggle-button {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(50, 50, 50, 0.6);
+      color: #ccc;
+      border: 1px solid #666;
+      padding: 6px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: 4px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .browser-window:hover .toggle-button {
+      opacity: 1;
+      pointer-events: auto;
+    }
   </style>
 </head>
 <body>
-  <div class="browser-window">
+  <div class="browser-window" id="pipWindow">
     <iframe class="video-frame" src="https://www.youtube.com/embed/RuPAp7_Sai4" allowfullscreen></iframe>
-    <div class="controls">
+
+    <button class="toggle-button" id="toggleBtn">Mostrar barra</button>
+
+    <div class="controls" id="controlsBar">
       <input class="location-input" type="text" value="https://www.youtube.com/embed/RuPAp7_Sai4" />
       <button class="go-button">Go</button>
     </div>
   </div>
 
   <script>
-    const win = document.querySelector('.browser-window');
-    const goButton = win.querySelector('.go-button');
-    const input = win.querySelector('.location-input');
-    const iframe = win.querySelector('iframe');
+    const pipWindow = document.getElementById('pipWindow');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const goButton = pipWindow.querySelector('.go-button');
+    const input = pipWindow.querySelector('.location-input');
+    const iframe = pipWindow.querySelector('iframe');
 
     goButton.addEventListener('click', () => {
       let url = input.value.trim();
@@ -99,6 +122,11 @@
       }
 
       iframe.src = url;
+    });
+
+    toggleBtn.addEventListener('click', () => {
+      pipWindow.classList.toggle('show-bar');
+      toggleBtn.textContent = pipWindow.classList.contains('show-bar') ? 'Ocultar barra' : 'Mostrar barra';
     });
   </script>
 </body>
