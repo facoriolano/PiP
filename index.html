@@ -2,34 +2,27 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>PiP Flutuante</title>
+  <title>PiP Invisível</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      background: transparent;
+      background: #000;
       overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
     }
 
-    .window {
-      position: absolute;
-      top: 100px;
-      left: 100px;
-      width: 640px;
-      height: 360px;
-      background: transparent;
-      resize: both;
-      overflow: hidden;
-      border: none;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    .browser-window {
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      position: relative;
     }
 
     .video-frame {
       width: 100%;
       height: 100%;
       border: none;
-      pointer-events: auto;
     }
 
     .controls {
@@ -47,7 +40,7 @@
       transition: opacity 0.3s ease;
     }
 
-    .window:hover .controls {
+    .browser-window:hover .controls {
       opacity: 1;
       pointer-events: auto;
     }
@@ -61,7 +54,7 @@
       font-size: 14px;
     }
 
-    .go-button, .close-button {
+    .go-button {
       padding: 6px 12px;
       background: #333;
       border: 1px solid #666;
@@ -69,31 +62,10 @@
       cursor: pointer;
       font-size: 14px;
     }
-
-    .close-button {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      z-index: 20;
-      background: rgba(50,50,50,0.8);
-      border-radius: 4px;
-    }
-
-    .drag-handle {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 20px;
-      cursor: move;
-      z-index: 5;
-    }
   </style>
 </head>
 <body>
-  <div class="window" id="pipWindow">
-    <div class="drag-handle" id="dragHandle"></div>
-    <button class="close-button" onclick="pipWindow.remove()">✕</button>
+  <div class="browser-window">
     <iframe class="video-frame" src="https://www.youtube.com/embed/RuPAp7_Sai4" allowfullscreen></iframe>
     <div class="controls">
       <input class="location-input" type="text" value="https://www.youtube.com/embed/RuPAp7_Sai4" />
@@ -102,11 +74,10 @@
   </div>
 
   <script>
-    const pipWindow = document.getElementById('pipWindow');
-    const dragHandle = document.getElementById('dragHandle');
-    const goButton = pipWindow.querySelector('.go-button');
-    const input = pipWindow.querySelector('.location-input');
-    const iframe = pipWindow.querySelector('iframe');
+    const win = document.querySelector('.browser-window');
+    const goButton = win.querySelector('.go-button');
+    const input = win.querySelector('.location-input');
+    const iframe = win.querySelector('iframe');
 
     goButton.addEventListener('click', () => {
       let url = input.value.trim();
@@ -126,29 +97,6 @@
       }
 
       iframe.src = url;
-    });
-
-    // Drag functionality
-    let isDragging = false;
-    let offsetX, offsetY;
-
-    dragHandle.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      offsetX = e.clientX - pipWindow.offsetLeft;
-      offsetY = e.clientY - pipWindow.offsetTop;
-      document.body.style.userSelect = 'none';
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (isDragging) {
-        pipWindow.style.left = (e.clientX - offsetX) + 'px';
-        pipWindow.style.top = (e.clientY - offsetY) + 'px';
-      }
-    });
-
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-      document.body.style.userSelect = '';
     });
   </script>
 </body>
