@@ -2,11 +2,11 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Netscape Dark PiP</title>
+  <title>Netscape PiP Invisível</title>
   <style>
     body {
       margin: 0;
-      background: #121212;
+      background: #000;
       font-family: 'Segoe UI', sans-serif;
     }
 
@@ -15,72 +15,48 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      background: #1e1e1e;
-      border: 1px solid #333;
-      box-shadow: 0 0 10px #000;
+      background: #000;
       overflow: hidden;
       position: relative;
     }
 
-    .title-bar,
-    .menu-bar,
-    .toolbar,
-    .location-bar,
-    .nav-tabs,
-    .status-bar {
-      background: rgba(30, 30, 30, 0.8);
-      color: #eee;
-      font-size: 12px;
-      padding: 4px 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .controls {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      opacity: 0;
+      pointer-events: none;
       transition: opacity 0.3s ease;
-    }
-
-    .title-bar {
-      justify-content: space-between;
-    }
-
-    .title-buttons {
+      background: rgba(20, 20, 20, 0.8);
+      padding: 8px;
       display: flex;
-      gap: 4px;
+      gap: 8px;
+      align-items: center;
     }
 
-    .title-btn {
-      width: 16px;
-      height: 16px;
-      background: #333;
-      border: 1px solid #666;
-      color: #ccc;
-      font-size: 10px;
-      text-align: center;
-      line-height: 14px;
-      cursor: pointer;
-    }
-
-    .toolbar button,
-    .go-button,
-    .pip-button,
-    .nav-tab {
-      font-size: 11px;
-      padding: 2px 6px;
-      background: #2a2a2a;
-      border: 1px solid #555;
-      color: #ccc;
-      cursor: pointer;
+    .browser-window:hover .controls {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .location-input {
       flex: 1;
-      padding: 2px 4px;
+      padding: 6px 8px;
       background: #111;
       border: 1px solid #444;
       color: #eee;
+      font-size: 14px;
     }
 
-    .nav-tabs {
-      flex-wrap: wrap;
+    .go-button {
+      padding: 6px 12px;
+      background: #333;
+      border: 1px solid #666;
+      color: #ccc;
+      cursor: pointer;
+      font-size: 14px;
     }
 
     .content {
@@ -93,89 +69,18 @@
       height: 100%;
       border: none;
     }
-
-    .status-bar {
-      font-size: 11px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* PiP escuro e transparente */
-    .browser-window.pip {
-      border: none;
-      box-shadow: none;
-    }
-
-    .browser-window.pip .title-bar,
-    .browser-window.pip .menu-bar,
-    .browser-window.pip .toolbar,
-    .browser-window.pip .location-bar,
-    .browser-window.pip .nav-tabs,
-    .browser-window.pip .status-bar {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .browser-window.pip:hover .title-bar,
-    .browser-window.pip:hover .menu-bar,
-    .browser-window.pip:hover .toolbar,
-    .browser-window.pip:hover .location-bar,
-    .browser-window.pip:hover .nav-tabs,
-    .browser-window.pip:hover .status-bar {
-      opacity: 1;
-      pointer-events: auto;
-    }
   </style>
 </head>
 <body>
   <div class="browser-window">
-    <div class="title-bar">
-      <span>Netscape - [about:blank]</span>
-      <div class="title-buttons">
-        <div class="title-btn">_</div>
-        <div class="title-btn">□</div>
-        <div class="title-btn">X</div>
-      </div>
-    </div>
-
-    <div class="menu-bar">
-      <div>File</div><div>Edit</div><div>View</div><div>Go</div><div>Bookmarks</div><div>Options</div><div>Directory</div><div>Window</div><div>Help</div>
-    </div>
-
-    <div class="toolbar">
-      <button>Back</button>
-      <button>Forward</button>
-      <button>Home</button>
-      <button>Reload</button>
-      <button>Images</button>
-      <button>Open</button>
-      <button>Print</button>
-      <button>Find</button>
-      <button>Stop</button>
-      <button class="pip-button">PiP</button>
-    </div>
-
-    <div class="location-bar">
-      <span>Location:</span>
+    <div class="controls">
       <input class="location-input" type="text" value="https://www.youtube.com/embed/RuPAp7_Sai4" />
       <button class="go-button">Go</button>
-    </div>
-
-    <div class="nav-tabs">
-      <button class="nav-tab">What's New!</button>
-      <button class="nav-tab">What's Cool</button>
-      <button class="nav-tab">Handbook</button>
-      <button class="nav-tab">Net Search</button>
-      <button class="nav-tab">Net Directory</button>
-      <button class="nav-tab">Software</button>
     </div>
 
     <div class="content">
       <iframe src="https://www.youtube.com/embed/RuPAp7_Sai4" allowfullscreen></iframe>
     </div>
-
-    <div class="status-bar">Document: Done</div>
   </div>
 
   <script>
@@ -183,9 +88,6 @@
     const goButton = win.querySelector('.go-button');
     const input = win.querySelector('.location-input');
     const iframe = win.querySelector('iframe');
-    const title = win.querySelector('.title-bar span');
-    const status = win.querySelector('.status-bar');
-    const pipButton = win.querySelector('.pip-button');
 
     goButton.addEventListener('click', () => {
       let url = input.value.trim();
@@ -205,15 +107,6 @@
       }
 
       iframe.src = url;
-      title.textContent = 'Netscape - [' + url + ']';
-      status.textContent = 'Loading: ' + url;
-      setTimeout(() => {
-        status.textContent = 'Document: Done (' + url + ')';
-      }, 1500);
-    });
-
-    pipButton.addEventListener('click', () => {
-      win.classList.toggle('pip');
     });
   </script>
 </body>
