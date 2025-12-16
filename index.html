@@ -2,12 +2,12 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Netscape Retro PiP</title>
+  <title>Netscape Dark PiP</title>
   <style>
     body {
       margin: 0;
-      background: #808080;
-      font-family: 'MS Sans Serif', Arial, sans-serif;
+      background: #121212;
+      font-family: 'Segoe UI', sans-serif;
     }
 
     .browser-window {
@@ -15,20 +15,31 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      background: #c0c0c0;
-      border: 2px solid #000;
-      box-shadow: 2px 2px 0 #404040;
+      background: #1e1e1e;
+      border: 1px solid #333;
+      box-shadow: 0 0 10px #000;
       overflow: hidden;
+      position: relative;
+    }
+
+    .title-bar,
+    .menu-bar,
+    .toolbar,
+    .location-bar,
+    .nav-tabs,
+    .status-bar {
+      background: rgba(30, 30, 30, 0.8);
+      color: #eee;
+      font-size: 12px;
+      padding: 4px 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.3s ease;
     }
 
     .title-bar {
-      background: linear-gradient(to right, #000080, #0000a0);
-      color: #fff;
-      padding: 2px 8px;
-      font-size: 12px;
-      display: flex;
       justify-content: space-between;
-      align-items: center;
     }
 
     .title-buttons {
@@ -37,39 +48,35 @@
     }
 
     .title-btn {
-      width: 14px;
-      height: 14px;
-      background: #c0c0c0;
-      border: 1px solid #000;
+      width: 16px;
+      height: 16px;
+      background: #333;
+      border: 1px solid #666;
+      color: #ccc;
       font-size: 10px;
-      line-height: 12px;
       text-align: center;
+      line-height: 14px;
       cursor: pointer;
     }
 
-    .menu-bar, .toolbar, .location-bar, .nav-tabs, .status-bar {
-      background: #c0c0c0;
-      font-size: 11px;
-      padding: 2px 4px;
-      border-bottom: 1px solid #808080;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .toolbar button, .go-button, .pip-button, .nav-tab {
+    .toolbar button,
+    .go-button,
+    .pip-button,
+    .nav-tab {
       font-size: 11px;
       padding: 2px 6px;
-      background: #e0e0e0;
-      border: 1px solid #000;
+      background: #2a2a2a;
+      border: 1px solid #555;
+      color: #ccc;
       cursor: pointer;
     }
 
     .location-input {
       flex: 1;
       padding: 2px 4px;
-      border: 1px inset #808080;
-      font-size: 11px;
+      background: #111;
+      border: 1px solid #444;
+      color: #eee;
     }
 
     .nav-tabs {
@@ -87,19 +94,37 @@
       border: none;
     }
 
+    .status-bar {
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* PiP escuro e transparente */
+    .browser-window.pip {
+      border: none;
+      box-shadow: none;
+    }
+
     .browser-window.pip .title-bar,
     .browser-window.pip .menu-bar,
     .browser-window.pip .toolbar,
     .browser-window.pip .location-bar,
     .browser-window.pip .nav-tabs,
     .browser-window.pip .status-bar {
-      display: none;
+      opacity: 0;
+      pointer-events: none;
     }
 
-    .status-bar {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .browser-window.pip:hover .title-bar,
+    .browser-window.pip:hover .menu-bar,
+    .browser-window.pip:hover .toolbar,
+    .browser-window.pip:hover .location-bar,
+    .browser-window.pip:hover .nav-tabs,
+    .browser-window.pip:hover .status-bar {
+      opacity: 1;
+      pointer-events: auto;
     }
   </style>
 </head>
