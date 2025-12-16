@@ -2,44 +2,25 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Netscape Multi-PiP</title>
+  <title>Netscape Retro PiP</title>
   <style>
-    /* Layout geral da página */
     body {
       margin: 0;
-      padding: 8px;
       background: #808080;
-      font-family: Arial, sans-serif;
-      box-sizing: border-box;
+      font-family: 'MS Sans Serif', Arial, sans-serif;
     }
 
-    h1 {
-      margin: 0 0 8px 0;
-      font-size: 18px;
-      color: #fff;
-      text-shadow: 1px 1px 0 #000;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 8px;
-      height: calc(100vh - 40px);
-    }
-
-    /* Janela do “Netscape” */
     .browser-window {
+      width: 100vw;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       background: #c0c0c0;
       border: 2px solid #000;
       box-shadow: 2px 2px 0 #404040;
-      position: relative;
       overflow: hidden;
     }
 
-    /* Barra de título */
     .title-bar {
       background: linear-gradient(to right, #000080, #0000a0);
       color: #fff;
@@ -48,13 +29,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      cursor: default;
-    }
-
-    .title-bar span {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .title-buttons {
@@ -73,56 +47,22 @@
       cursor: pointer;
     }
 
-    /* Barra de menus */
-    .menu-bar {
+    .menu-bar, .toolbar, .location-bar, .nav-tabs, .status-bar {
       background: #c0c0c0;
-      padding: 2px 4px;
       font-size: 11px;
+      padding: 2px 4px;
       border-bottom: 1px solid #808080;
-      display: flex;
-      gap: 8px;
-      user-select: none;
-    }
-
-    .menu-item {
-      cursor: default;
-    }
-
-    /* Barra de ferramentas */
-    .toolbar {
       display: flex;
       align-items: center;
-      gap: 4px;
-      padding: 2px 4px;
-      background: #c0c0c0;
-      border-bottom: 1px solid #808080;
+      gap: 6px;
     }
 
-    .toolbar button {
+    .toolbar button, .go-button, .pip-button, .nav-tab {
       font-size: 11px;
-      padding: 2px 4px;
+      padding: 2px 6px;
       background: #e0e0e0;
       border: 1px solid #000;
       cursor: pointer;
-    }
-
-    .toolbar button:active {
-      border-style: inset;
-    }
-
-    /* Barra de endereço */
-    .location-bar {
-      display: flex;
-      align-items: center;
-      padding: 2px 4px;
-      background: #c0c0c0;
-      border-bottom: 1px solid #808080;
-      font-size: 11px;
-      gap: 4px;
-    }
-
-    .location-label {
-      white-space: nowrap;
     }
 
     .location-input {
@@ -132,37 +72,13 @@
       font-size: 11px;
     }
 
-    .go-button {
-      font-size: 11px;
-      padding: 2px 6px;
-      background: #e0e0e0;
-      border: 1px solid #000;
-      cursor: pointer;
-    }
-
-    /* Aba de navegação (What's New, etc.) */
     .nav-tabs {
-      display: flex;
-      padding: 2px 4px;
-      gap: 4px;
-      background: #c0c0c0;
-      border-bottom: 1px solid #808080;
-      font-size: 11px;
+      flex-wrap: wrap;
     }
 
-    .nav-tab {
-      padding: 2px 6px;
-      background: #e0e0e0;
-      border: 1px solid #000;
-      cursor: default;
-      white-space: nowrap;
-    }
-
-    /* Área do conteúdo / vídeo */
     .content {
       flex: 1;
       background: #000;
-      position: relative;
     }
 
     .content iframe {
@@ -171,18 +87,6 @@
       border: none;
     }
 
-    /* Barra de status */
-    .status-bar {
-      background: #c0c0c0;
-      padding: 2px 4px;
-      font-size: 11px;
-      border-top: 1px solid #808080;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* Modo PiP (esconde barras) */
     .browser-window.pip .title-bar,
     .browser-window.pip .menu-bar,
     .browser-window.pip .toolbar,
@@ -192,335 +96,93 @@
       display: none;
     }
 
-    .browser-window.pip {
-      border: 1px solid #000;
-      box-shadow: none;
-    }
-
-    /* Botão PiP */
-    .pip-button {
-      font-size: 11px;
-      padding: 2px 4px;
-      background: #ffd700;
-      border: 1px solid #000;
-      cursor: pointer;
-      margin-left: auto;
-    }
-
-    .pip-button:active {
-      border-style: inset;
+    .status-bar {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   </style>
 </head>
 <body>
-  <h1>Netscape Multi-PiP (4 janelas em 1 index.html)</h1>
-
-  <div class="grid">
-    <!-- Janela 1 -->
-    <div class="browser-window" data-window="1">
-      <div class="title-bar">
-        <span>Netscape - [about:blank]</span>
-        <div class="title-buttons">
-          <div class="title-btn">_</div>
-          <div class="title-btn">□</div>
-          <div class="title-btn">X</div>
-        </div>
-      </div>
-
-      <div class="menu-bar">
-        <div class="menu-item">File</div>
-        <div class="menu-item">Edit</div>
-        <div class="menu-item">View</div>
-        <div class="menu-item">Go</div>
-        <div class="menu-item">Bookmarks</div>
-        <div class="menu-item">Options</div>
-        <div class="menu-item">Directory</div>
-        <div class="menu-item">Window</div>
-        <div class="menu-item">Help</div>
-      </div>
-
-      <div class="toolbar">
-        <button>Back</button>
-        <button>Forward</button>
-        <button>Home</button>
-        <button>Reload</button>
-        <button>Images</button>
-        <button>Open</button>
-        <button>Print</button>
-        <button>Find</button>
-        <button>Stop</button>
-
-        <button class="pip-button" type="button">PiP</button>
-      </div>
-
-      <div class="location-bar">
-        <span class="location-label">Location:</span>
-        <input
-          class="location-input"
-          type="text"
-          value="https://www.youtube.com/embed/dQw4w9WgXcQ"
-        />
-        <button class="go-button" type="button">Go</button>
-      </div>
-
-      <div class="nav-tabs">
-        <div class="nav-tab">What's New!</div>
-        <div class="nav-tab">What's Cool</div>
-        <div class="nav-tab">Handbook</div>
-        <div class="nav-tab">Net Search</div>
-        <div class="nav-tab">Net Directory</div>
-        <div class="nav-tab">Software</div>
-      </div>
-
-      <div class="content">
-        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-      </div>
-
-      <div class="status-bar">
-        Document: Done
+  <div class="browser-window">
+    <div class="title-bar">
+      <span>Netscape - [about:blank]</span>
+      <div class="title-buttons">
+        <div class="title-btn">_</div>
+        <div class="title-btn">□</div>
+        <div class="title-btn">X</div>
       </div>
     </div>
 
-    <!-- Janela 2 -->
-    <div class="browser-window" data-window="2">
-      <div class="title-bar">
-        <span>Netscape - [about:blank]</span>
-        <div class="title-buttons">
-          <div class="title-btn">_</div>
-          <div class="title-btn">□</div>
-          <div class="title-btn">X</div>
-        </div>
-      </div>
-
-      <div class="menu-bar">
-        <div class="menu-item">File</div>
-        <div class="menu-item">Edit</div>
-        <div class="menu-item">View</div>
-        <div class="menu-item">Go</div>
-        <div class="menu-item">Bookmarks</div>
-        <div class="menu-item">Options</div>
-        <div class="menu-item">Directory</div>
-        <div class="menu-item">Window</div>
-        <div class="menu-item">Help</div>
-      </div>
-
-      <div class="toolbar">
-        <button>Back</button>
-        <button>Forward</button>
-        <button>Home</button>
-        <button>Reload</button>
-        <button>Images</button>
-        <button>Open</button>
-        <button>Print</button>
-        <button>Find</button>
-        <button>Stop</button>
-
-        <button class="pip-button" type="button">PiP</button>
-      </div>
-
-      <div class="location-bar">
-        <span class="location-label">Location:</span>
-        <input
-          class="location-input"
-          type="text"
-          value="https://www.youtube.com/embed/5qap5aO4i9A"
-        />
-        <button class="go-button" type="button">Go</button>
-      </div>
-
-      <div class="nav-tabs">
-        <div class="nav-tab">What's New!</div>
-        <div class="nav-tab">What's Cool</div>
-        <div class="nav-tab">Handbook</div>
-        <div class="nav-tab">Net Search</div>
-        <div class="nav-tab">Net Directory</div>
-        <div class="nav-tab">Software</div>
-      </div>
-
-      <div class="content">
-        <iframe src="https://www.youtube.com/embed/5qap5aO4i9A" allowfullscreen></iframe>
-      </div>
-
-      <div class="status-bar">
-        Document: Done
-      </div>
+    <div class="menu-bar">
+      <div>File</div><div>Edit</div><div>View</div><div>Go</div><div>Bookmarks</div><div>Options</div><div>Directory</div><div>Window</div><div>Help</div>
     </div>
 
-    <!-- Janela 3 -->
-    <div class="browser-window" data-window="3">
-      <div class="title-bar">
-        <span>Netscape - [about:blank]</span>
-        <div class="title-buttons">
-          <div class="title-btn">_</div>
-          <div class="title-btn">□</div>
-          <div class="title-btn">X</div>
-        </div>
-      </div>
-
-      <div class="menu-bar">
-        <div class="menu-item">File</div>
-        <div class="menu-item">Edit</div>
-        <div class="menu-item">View</div>
-        <div class="menu-item">Go</div>
-        <div class="menu-item">Bookmarks</div>
-        <div class="menu-item">Options</div>
-        <div class="menu-item">Directory</div>
-        <div class="menu-item">Window</div>
-        <div class="menu-item">Help</div>
-      </div>
-
-      <div class="toolbar">
-        <button>Back</button>
-        <button>Forward</button>
-        <button>Home</button>
-        <button>Reload</button>
-        <button>Images</button>
-        <button>Open</button>
-        <button>Print</button>
-        <button>Find</button>
-        <button>Stop</button>
-
-        <button class="pip-button" type="button">PiP</button>
-      </div>
-
-      <div class="location-bar">
-        <span class="location-label">Location:</span>
-        <input
-          class="location-input"
-          type="text"
-          value="https://www.youtube.com/embed/live_stream?channel=UC4R8DWoMoI7CAwX8_LjQHig"
-        />
-        <button class="go-button" type="button">Go</button>
-      </div>
-
-      <div class="nav-tabs">
-        <div class="nav-tab">What's New!</div>
-        <div class="nav-tab">What's Cool</div>
-        <div class="nav-tab">Handbook</div>
-        <div class="nav-tab">Net Search</div>
-        <div class="nav-tab">Net Directory</div>
-        <div class="nav-tab">Software</div>
-      </div>
-
-      <div class="content">
-        <iframe src="https://www.youtube.com/embed/live_stream?channel=UC4R8DWoMoI7CAwX8_LjQHig" allowfullscreen></iframe>
-      </div>
-
-      <div class="status-bar">
-        Document: Done
-      </div>
+    <div class="toolbar">
+      <button>Back</button>
+      <button>Forward</button>
+      <button>Home</button>
+      <button>Reload</button>
+      <button>Images</button>
+      <button>Open</button>
+      <button>Print</button>
+      <button>Find</button>
+      <button>Stop</button>
+      <button class="pip-button">PiP</button>
     </div>
 
-    <!-- Janela 4 -->
-    <div class="browser-window" data-window="4">
-      <div class="title-bar">
-        <span>Netscape - [about:blank]</span>
-        <div class="title-buttons">
-          <div class="title-btn">_</div>
-          <div class="title-btn">□</div>
-          <div class="title-btn">X</div>
-        </div>
-      </div>
-
-      <div class="menu-bar">
-        <div class="menu-item">File</div>
-        <div class="menu-item">Edit</div>
-        <div class="menu-item">View</div>
-        <div class="menu-item">Go</div>
-        <div class="menu-item">Bookmarks</div>
-        <div class="menu-item">Options</div>
-        <div class="menu-item">Directory</div>
-        <div class="menu-item">Window</div>
-        <div class="menu-item">Help</div>
-      </div>
-
-      <div class="toolbar">
-        <button>Back</button>
-        <button>Forward</button>
-        <button>Home</button>
-        <button>Reload</button>
-        <button>Images</button>
-        <button>Open</button>
-        <button>Print</button>
-        <button>Find</button>
-        <button>Stop</button>
-
-        <button class="pip-button" type="button">PiP</button>
-      </div>
-
-      <div class="location-bar">
-        <span class="location-label">Location:</span>
-        <input
-          class="location-input"
-          type="text"
-          value="https://www.youtube.com/embed/live_stream?channel=UCNye-wNBqNL5ZzHSJj3l8Bg"
-        />
-        <button class="go-button" type="button">Go</button>
-      </div>
-
-      <div class="nav-tabs">
-        <div class="nav-tab">What's New!</div>
-        <div class="nav-tab">What's Cool</div>
-        <div class="nav-tab">Handbook</div>
-        <div class="nav-tab">Net Search</div>
-        <div class="nav-tab">Net Directory</div>
-        <div class="nav-tab">Software</div>
-      </div>
-
-      <div class="content">
-        <iframe src="https://www.youtube.com/embed/live_stream?channel=UCNye-wNBqNL5ZzHSJj3l8Bg" allowfullscreen></iframe>
-      </div>
-
-      <div class="status-bar">
-        Document: Done
-      </div>
+    <div class="location-bar">
+      <span>Location:</span>
+      <input class="location-input" type="text" value="https://www.youtube.com/embed/dQw4w9WgXcQ" />
+      <button class="go-button">Go</button>
     </div>
+
+    <div class="nav-tabs">
+      <button class="nav-tab">What's New!</button>
+      <button class="nav-tab">What's Cool</button>
+      <button class="nav-tab">Handbook</button>
+      <button class="nav-tab">Net Search</button>
+      <button class="nav-tab">Net Directory</button>
+      <button class="nav-tab">Software</button>
+    </div>
+
+    <div class="content">
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+    </div>
+
+    <div class="status-bar">Document: Done</div>
   </div>
 
   <script>
-    // Função para atualizar iframe quando clicar em "Go"
-    document.querySelectorAll('.browser-window').forEach(function(win) {
-      var goButton = win.querySelector('.go-button');
-      var input = win.querySelector('.location-input');
-      var iframe = win.querySelector('iframe');
-      var title = win.querySelector('.title-bar span');
-      var status = win.querySelector('.status-bar');
+    const win = document.querySelector('.browser-window');
+    const goButton = win.querySelector('.go-button');
+    const input = win.querySelector('.location-input');
+    const iframe = win.querySelector('iframe');
+    const title = win.querySelector('.title-bar span');
+    const status = win.querySelector('.status-bar');
+    const pipButton = win.querySelector('.pip-button');
 
-      if (goButton && input && iframe) {
-        goButton.addEventListener('click', function() {
-          var url = input.value.trim();
-          if (!url) return;
+    goButton.addEventListener('click', () => {
+      let url = input.value.trim();
+      if (!url) return;
 
-          // Se for link YouTube normal, converte pra /embed/ simples
-          if (url.includes('youtube.com/watch')) {
-            var urlObj = new URL(url);
-            var v = urlObj.searchParams.get('v');
-            if (v) {
-              url = 'https://www.youtube.com/embed/' + v;
-              input.value = url;
-            }
-          }
-
-          iframe.src = url;
-          if (title) {
-            title.textContent = 'Netscape - [' + url + ']';
-          }
-          if (status) {
-            status.textContent = 'Loading: ' + url;
-            setTimeout(function() {
-              status.textContent = 'Document: Done (' + url + ')';
-            }, 1500);
-          }
-        });
+      if (url.includes('youtube.com/watch')) {
+        const urlObj = new URL(url);
+        const v = urlObj.searchParams.get('v');
+        if (v) url = 'https://www.youtube.com/embed/' + v;
+        input.value = url;
       }
 
-      // Botão PiP: esconde/mostra barras
-      var pipButton = win.querySelector('.pip-button');
-      if (pipButton) {
-        pipButton.addEventListener('click', function() {
-          win.classList.toggle('pip');
-        });
-      }
+      iframe.src = url;
+      title.textContent = 'Netscape - [' + url + ']';
+      status.textContent = 'Loading: ' + url;
+      setTimeout(() => {
+        status.textContent = 'Document: Done (' + url + ')';
+      }, 1500);
+    });
+
+    pipButton.addEventListener('click', () => {
+      win.classList.toggle('pip');
     });
   </script>
 </body>
